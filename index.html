@@ -1,0 +1,27 @@
+<html>
+<head>
+	<title>TimeTable</title>
+	<script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+	<script src="js/time-table.js"></script>
+	<link rel="stylesheet" href="css/time-table.css" />
+</head>
+<body>
+	<div id="weekly-schedule"></div>
+	<script>
+		$("#weekly-schedule").dayScheduleSelector({
+			days: [0, 1, 2, 3, 4, 5, 6],  
+			startTime: '08:00',         
+			endTime     : '20:00',
+			interval    : 30,    
+			stringDays  : ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
+
+			template: '<div class="day-schedule-selector">' +
+                '<table class="schedule-table">'            +
+                  '<thead class="schedule-header"></thead>' +
+                  '<tbody class="schedule-rows"></tbody>'   +
+                '</table>'                                  +
+              '<div>'
+		});
+	</script>
+</body>
+</html>
