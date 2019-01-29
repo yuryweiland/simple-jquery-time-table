@@ -78,31 +78,7 @@
   DayScheduleSelector.prototype.deselect = function ($slot) { $slot.removeAttr('data-selected'); }
 
   function isSlotSelected($slot) { return $slot.is('[data-selected]'); }
-  function isSlotSelecting($slot) { return $slot.is('[data-selecting]'); }
-  
-  function isDaySelected($day) { 
-
-		  console.log(123, $day);
-  
-	// document.querySelectorAll().
-	
-	var days = document.querySelectorAll('[data-time]');
-
-		[].forEach.call(days, function(day) {
-		  // do whatever
-		  day.style.color = "red";
-		  
-
-		  
-		  console.log(day);
-		  
-		});
-  
-  
-	// return $day.is('[data-selected]');
-  
-  }
-  
+  function isSlotSelecting($slot) { return $slot.is('[data-selecting]'); } 
 
   /**
    * Get the selected time slots given a starting and a ending slot
