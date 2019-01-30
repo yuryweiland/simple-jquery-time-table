@@ -62,7 +62,7 @@
         return '<td class="time-slot" data-time="' + hhmm(d) + '" data-day="' + days[i] + '"></td>'
       }).join();
 
-      $el.append('<tr><td class="time-label">' + hmmAmPm(d) + '</td>' + daysInARow + '</tr>');
+      $el.append('<tr><td class="time-label" data-time="' + hhmm(d) + '">' + hmmAmPm(d) + '</td>' + daysInARow + '</tr>');
     });
   };
 
@@ -125,18 +125,18 @@
 	
 	this.$el.on('click', '.day-label', function () {
 		var day = $(this).data('day');
-		var timeSlots = document.querySelectorAll('.time-slot[data-day="' + day + '"]');
-		var dayHasSelectedTime = [...timeSlots].some((timeSlot) => timeSlot.hasAttribute('data-selected', 'selected'));
+		var daySlots = document.querySelectorAll('.time-slot[data-day="' + day + '"]');
+		var dayHasSelectedTime = [...daySlots].some((daySlot) => daySlot.hasAttribute('data-selected', 'selected'));
 	
 			if (dayHasSelectedTime) {
-				for (var i=0; i < timeSlots.length; i++) {
-					timeSlots[i].removeAttribute('data-selected', 'selected');
+				for (var i=0; i < daySlots.length; i++) {
+                    daySlots[i].removeAttribute('data-selected', 'selected');
 				}
 				
 				dayHasSelectedTime = false;
 			} else {
-				for (var i=0; i < timeSlots.length; i++) {
-					timeSlots[i].setAttribute('data-selected', 'selected');
+				for (var i=0; i < daySlots.length; i++) {
+                    daySlots[i].setAttribute('data-selected', 'selected');
 				}
 				dayHasSelectedTime = true;
 			}
@@ -146,25 +146,22 @@
 	});
 	
 	this.$el.on('click', '.time-label', function () {
-      var time = $(this).data('time');
-      if (!plugin.isSelecting()) {  // if we are not in selecting mode
-        if (isSlotSelected($(this))) { plugin.deselect($(this)); }
-        else {  // then start selecting
-          plugin.$selectingStart = $(this);
-          $(this).attr('data-selecting', 'selecting');
-          plugin.$el.find('.time-slot').attr('data-disabled', 'disabled');
-          plugin.$el.find('.time-slot[data-time="' + time + '"]').removeAttr('data-disabled');
+        var time = $(this).data('time');
+        var timeSlots = document.querySelectorAll('.time-slot[data-time="' + time + '"]');
+        var timeHasSelectedDays = [...timeSlots].some((timeSlot) => timeSlot.hasAttribute('data-selected', 'selected'));
+
+        if (timeHasSelectedDays) {
+            for (var i=0; i < timeSlots.length; i++) {
+                timeSlots[i].removeAttribute('data-selected', 'selected');
+            }
+
+            timeHasSelectedDays = false;
+        } else {
+            for (var i=0; i < timeSlots.length; i++) {
+                timeSlots[i].setAttribute('data-selected', 'selected');
+            }
+            timeHasSelectedDays = true;
         }
-      } else {  // if we are in selecting mode
-        if (time == plugin.$selectingStart.data('time')) {  // if clicking on the same time column
-          // then end of selection
-          plugin.$el.find('.time-slot[data-time="' + time + '"]').filter('[data-selecting]')
-            .attr('data-selected', 'selected').removeAttr('data-selecting');
-          plugin.$el.find('.time-slot').removeAttr('data-disabled');
-          plugin.$el.trigger('selected.artsy.dayScheduleSelector', [getSelection(plugin, plugin.$selectingStart, $(this))]);
-          plugin.$selectingStart = null;
-        }
-      }
     });
 
     this.$el.on('mouseover', '.time-slot', function () {
