@@ -7,13 +7,13 @@
     this.render();
     this.attachEvents();
     this.$selectingStart = null;
-  }
+  };
 
   DayScheduleSelector.DEFAULTS = {
     days        : [0, 1, 2, 3, 4, 5, 6],  // Sun - Sat
     startTime   : '08:00',                // HH:mm format
     endTime     : '20:00',                // HH:mm format
-    interval    : 30,                     // minutes
+    interval    : 60,                     // minutes
     stringDays  : ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'],
     template    : '<div class="day-schedule-selector">'         +
                     '<table class="schedule-table">'            +
@@ -74,8 +74,8 @@
     return !!this.$selectingStart;
   }
 
-  DayScheduleSelector.prototype.select = function ($slot) { $slot.attr('data-selected', 'selected'); }
-  DayScheduleSelector.prototype.deselect = function ($slot) { $slot.removeAttr('data-selected'); }
+  DayScheduleSelector.prototype.select = function ($slot) { $slot.attr('data-selected', 'selected'); };
+  DayScheduleSelector.prototype.deselect = function ($slot) { $slot.removeAttr('data-selected'); };
 
   function isSlotSelected($slot) { return $slot.is('[data-selected]'); }
   function isSlotSelecting($slot) { return $slot.is('[data-selecting]'); } 
@@ -88,7 +88,7 @@
   function getSelection(plugin, $a, $b) {
     var $slots, small, large, temp;
     if (!$a.hasClass('time-slot') || !$b.hasClass('time-slot') ||
-        ($a.data('day') != $b.data('day'))) { return []; }
+        ($a.data('day') !== $b.data('day'))) { return []; }
     $slots = plugin.$el.find('.time-slot[data-day="' + $a.data('day') + '"]');
     small = $slots.index($a); large = $slots.index($b);
     if (small > large) { temp = small; small = large; large = temp; }
@@ -111,7 +111,7 @@
           plugin.$el.find('.time-slot[data-day="' + day + '"]').removeAttr('data-disabled');
         }
       } else {  // if we are in selecting mode
-        if (day == plugin.$selectingStart.data('day')) {  // if clicking on the same day column
+        if (day === plugin.$selectingStart.data('day')) {  // if clicking on the same day column
           // then end of selection
           plugin.$el.find('.time-slot[data-day="' + day + '"]').filter('[data-selecting]')
             .attr('data-selected', 'selected').removeAttr('data-selecting');
@@ -129,13 +129,13 @@
 		var dayHasSelectedTime = [...daySlots].some((daySlot) => daySlot.hasAttribute('data-selected', 'selected'));
 	
 			if (dayHasSelectedTime) {
-				for (var i=0; i < daySlots.length; i++) {
+				for (var i = 0; i < daySlots.length; i++) {
                     daySlots[i].removeAttribute('data-selected', 'selected');
 				}
 				
 				dayHasSelectedTime = false;
 			} else {
-				for (var i=0; i < daySlots.length; i++) {
+				for (var i = 0; i < daySlots.length; i++) {
                     daySlots[i].setAttribute('data-selected', 'selected');
 				}
 				dayHasSelectedTime = true;
@@ -151,13 +151,13 @@
         var timeHasSelectedDays = [...timeSlots].some((timeSlot) => timeSlot.hasAttribute('data-selected', 'selected'));
 
         if (timeHasSelectedDays) {
-            for (var i=0; i < timeSlots.length; i++) {
+            for (var i = 0; i < timeSlots.length; i++) {
                 timeSlots[i].removeAttribute('data-selected', 'selected');
             }
 
             timeHasSelectedDays = false;
         } else {
-            for (var i=0; i < timeSlots.length; i++) {
+            for (var i = 0; i < timeSlots.length; i++) {
                 timeSlots[i].setAttribute('data-selected', 'selected');
             }
             timeHasSelectedDays = true;
@@ -218,7 +218,7 @@
 
         if (!!end) { selections[v].push([start, end]); start = end = false; }
       });
-    })
+    });
     return selections;
   };
 
@@ -255,7 +255,7 @@
     return this.each(function (){
       var $this   = $(this)
         , data    = $this.data('artsy.dayScheduleSelector')
-        , options = typeof option == 'object' && option;
+        , options = typeof option === 'object' && option;
 
       if (!data) {
         $this.data('artsy.dayScheduleSelector', (data = new DayScheduleSelector(this, options)));
